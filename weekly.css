@@ -1,0 +1,42 @@
+/* Lea Krasniqi */
+
+.card-weather {
+    border-radius: 10px;
+    transition: 0.2s;
+    text-align: center;
+}
+
+.card-weather:hover {
+    transform: scale(1.03);
+}
+
+.weather-icon {
+    width: 60px;
+}
+
+/* WELCOME  */
+.welcome-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    max-width: 650px;
+}
+
+/* Make it look good on small screens */
+@media (max-width: 576px) {
+    .welcome-hero {
+        height: 60vh;
+    }
+}
+
+
+/*  Gradient background                    */
+
+
+body {
+    background: linear-gradient(180deg, #cfe7ff 0%, #eaf3ff 40%, #ffffff 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/*Lea Krasniqi*/
