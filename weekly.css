@@ -196,6 +196,18 @@ body.light-mode .text-muted {
     color: #000 !important;
 }
 
+body.light-mode .footer {
+    background-color: #f1f3f5;
+    font-size: 0.9rem;
+    color: #212529;
+    border-top: 1px solid #d5d7da;
+}
+body.dark-mode .footer {
+    background-color: #262626 !important;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    border-top: 1px solid #3a3a3a;
+}
 
 /* Lea Krasniqi */
 
