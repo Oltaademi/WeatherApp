@@ -1,17 +1,24 @@
-/* Era Krasniqi - Daily Forecast Page */
+/* BEGIN StudentName */
 
-/* GENERAL STYLES */
+/* ----------------------------------------------------- */
+/* GLOBAL THEME                                           */
+/* ----------------------------------------------------- */
+
 body {
     background: linear-gradient(180deg, #0a0f24 0%, #141a33 40%, #0a0f24 100%);
     color: #e6e6e6;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: "Segoe UI", sans-serif;
+    overflow-x: hidden;
 }
 
 .container {
     max-width: 1100px;
 }
 
-/* NAVBAR */
+/* ----------------------------------------------------- */
+/* NAVBAR                                                 */
+/* ----------------------------------------------------- */
+
 .navbar {
     background: #0d47a1 !important;
     box-shadow: 0 4px 20px rgba(0, 150, 255, 0.3);
@@ -25,33 +32,32 @@ body {
     color: #90caf9 !important;
 }
 
-/* WELCOME CARD */
-.welcome-card {
-    background: rgba(255, 255, 255, 0.04);
-    padding: 2rem;
-    border-radius: 20px;
- backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 40px rgba(0, 150, 255, 0.15);
-    color: white;
+/* ----------------------------------------------------- */
+/* SEARCH BAR                                             */
+/* ----------------------------------------------------- */
+
+input.form-control,
+.custom-search {
+    background: #9aa4c2 !important;
+    border: 1px solid #bfbfbf !important;
+    color: #000 !important;
 }
 
-/* SEARCH & INPUT STYLES */
-input.form-control {
-    background: #1b2340;
-    border: 1px solid #394b7d;
-    color: #e6e6e6;
+input.form-control::placeholder,
+.custom-search::placeholder {
+    color: #555 !important;
 }
 
-input.form-control::placeholder {
-    color: #9aa4c2;
+input.form-control:focus,
+.custom-search:focus {
+    background: #e0e0e0 !important;
+    border-color: #64b5f6 !important;
+    color: black !important;
 }
 
-input.form-control:focus {
-    background: #1f2a4d;
-    border-color: #64b5f6;
-    color: white;
-}
+/* ----------------------------------------------------- */
+/* BUTTONS                                                */
+/* ----------------------------------------------------- */
 
 .btn-primary {
     background-color: #1565c0;
@@ -63,7 +69,53 @@ input.form-control:focus {
     background-color: #1976d2;
 }
 
-/* FORECAST CARDS */
+select.form-select {
+    background: #1b2340;
+    border: 1px solid #394b7d;
+    color: #e6e6e6;
+}
+
+select.form-select:focus {
+    background: #1f2a4d;
+    border-color: #64b5f6;
+}
+
+/* ----------------------------------------------------- */
+/* WELCOME CARD                                           */
+/* ----------------------------------------------------- */
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 40px rgba(0, 150, 255, 0.15);
+    color: white;
+}
+
+/* ----------------------------------------------------- */
+/* INFO BOXES (TODAY’S WEATHER)                           */
+/* ----------------------------------------------------- */
+
+/* Icon styling */
+.info-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Make all info boxes equal size */
+.info-card .card {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ----------------------------------------------------- */
+/* FORECAST CARDS (still used for info card layout)      */
+/* ----------------------------------------------------- */
+
 .card-weather {
     background: #1b2340;
     border-radius: 15px;
@@ -84,15 +136,78 @@ input.form-control:focus {
     font-weight: 600;
 }
 
-/* ALERT */
-#summaryBox {
-    margin-top: 1rem;
+/* ----------------------------------------------------- */
+/* RESPONSIVE FIXES                                       */
+/* ----------------------------------------------------- */
+
+@media (max-width: 576px) {
+    .welcome-card {
+        margin: 0 10px;
+    }
 }
-/* DARK MODE */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+
+/* ----------------------------------------------------- */
+/* LIGHT MODE                                            */
+/* ----------------------------------------------------- */
+
+body.light-mode {
+    background: linear-gradient(180deg, #cfe7ff 0%, #eaf3ff 40%, #ffffff 100%) !important;
+    color: black !important;
 }
+
+body.light-mode .card-weather {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #d0d0d0;
+}
+
+body.light-mode .card-weather:hover {
+    transform: scale(1.03);
+}
+
+body.light-mode .welcome-card {
+    background: rgba(255, 255, 255, 0.85) !important;
+    color: black !important;
+}
+
+body.light-mode .form-control,
+body.light-mode .form-select,
+body.light-mode .custom-search {
+    background: #1b2340 !important;
+    color: #e6e6e6 !important;
+    border: 1px solid #cccccc !important;
+}
+
+body.light-mode .btn-primary {
+    background-color: #1e88e5 !important;
+}
+
+body.light-mode .navbar {
+    background: #1976d2 !important;
+}
+
+body.light-mode .text-danger {
+    color: #d32f2f !important;
+}
+
+body.light-mode .text-primary {
+    color: #1565c0 !important;
+}
+
+body.light-mode .text-muted {
+    color: #000 !important;
+}
+
+body.light-mode .footer {
+    background-color: #f1f3f5;
+    font-size: 0.9rem;
+    color: #212529;
+    border-top: 1px solid #d5d7da;
+}
+
+/* ----------------------------------------------------- */
+/* DARK MODE — matches your current JS toggle             */
+/* ----------------------------------------------------- */
 
 body.dark-mode .navbar {
     background-color: #1f1f1f !important;
@@ -100,14 +215,12 @@ body.dark-mode .navbar {
 
 body.dark-mode .card-weather {
     background-color: #2c2c2c;
-    color: #f0f0f0;
+    color: #ffffff;
 }
 
-/* FOOTER */
-.footer {
-    font-size: 0.9rem;
-    color: #cfd8dc;
-    background-color: transparent;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+body.dark-mode .footer {
+    color: #ffffff !important;
+    border-top: 1px solid #3a3a3a;
 }
+
+/* END StudentName */

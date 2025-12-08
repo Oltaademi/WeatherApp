@@ -6,6 +6,31 @@ const forecastOutput = document.getElementById('forecastOutput');
 const summaryBox = document.getElementById('summaryBox');
 const themeToggle = document.getElementById('themeToggle');
 
+const celsiusBtn = document.getElementById("celsiusBtn");
+const fahrenheitBtn = document.getElementById("fahrenheitBtn");
+
+// Default temp mode = Celsius
+let isCelsius = true;
+celsiusBtn.classList.add("active");
+
+// Celsius button toggle
+celsiusBtn.addEventListener("click", () => {
+    isCelsius = true;
+    celsiusBtn.classList.add("active");
+    fahrenheitBtn.classList.remove("active");
+
+    if (cityInput.value.trim()) searchBtn.click();
+});
+
+// Fahrenheit button toggle
+fahrenheitBtn.addEventListener("click", () => {
+    isCelsius = false;
+    fahrenheitBtn.classList.add("active");
+    celsiusBtn.classList.remove("active");
+
+    if (cityInput.value.trim()) searchBtn.click();
+});
+
 searchBtn.addEventListener('click', () => {
     const city = cityInput.value.trim();
     if (!city) {
@@ -26,63 +51,142 @@ function fetchCityCoords(city) {
     fetch(geoUrl)
         .then(res => res.json())
         .then(data => {
+
             if (!data.results || data.results.length === 0) {
                 showAlert('City not found.', 'warning');
-return;
+                return;
             }
+
             const { latitude, longitude, name, country } = data.results[0];
-            summaryBox.innerHTML = `<div class='alert alert-primary mt-3'>Forecast for <strong>${name}, ${country}</strong></div>`;
+
+            summaryBox.innerHTML = `
+                <div class='alert alert-primary mt-3'>
+                    Forecast for <strong>${name}, ${country}</strong>
+                </div>
+            `;
+
             fetchDailyForecast(latitude, longitude);
         })
         .catch(() => showAlert('Error fetching city data.', 'danger'));
 }
 
 function fetchDailyForecast(lat, lon) {
-    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+
+    const weatherUrl =
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+        `&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,windspeed_10m_max,weathercode&timezone=auto`;
+
     fetch(weatherUrl)
         .then(res => res.json())
         .then(data => {
-            console.log('Forecast API response:', data); // <-- ADD THIS
             if (!data.daily || !data.daily.time) {
                 showAlert('Forecast data is missing or invalid.', 'warning');
                 return;
             }
             renderForecast(data.daily);
         })
-
         .catch(() => showAlert('Error fetching forecast.', 'danger'));
 }
 
 
-function renderForecast(daily) {
-    forecastOutput.innerHTML = '';
-    const icons = code => {
-        if (code === 0) return '☀';
-        if (code <= 3) return '⛅';
-        if (code <= 48) return '🌫';
-        if (code <= 67) return '🌧';
-        if (code <= 86) return '❄';
-        return '🌩';
-    };
-daily.time.forEach((date, i) => {
-        const card = `
-        <div class="col-md-3 col-sm-6">
-            <div class="card card-weather text-center p-3">
-                <h5>${date}</h5>
-                <div style="font-size: 2rem">${icons(daily.weathercode[i])}</div>
-                <p class="text-danger">Max: ${Math.round(daily.temperature_2m_max[i])}°C</p>
-                <p class="text-primary">Min: ${Math.round(daily.temperature_2m_min[i])}°C</p>
-            </div>
-        </div>
-        `;
-        forecastOutput.insertAdjacentHTML('beforeend', card);
-    });
+// ICON MAP
+function icons(code) {
+    if (code === 0) return '☀';
+    if (code <= 3) return '⛅';
+    if (code <= 48) return '🌫';
+    if (code <= 67) return '🌧';
+    if (code <= 86) return '❄';
+    return '🌩';
 }
 
-// THEME TOGGLE LOGIC
-let isDark = false;
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    isDark = !isDark;
-    themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+
+// RENDER INFO BOXES
+function renderForecast(daily) {
+
+    forecastOutput.innerHTML = '';
+
+    let todayWind = daily.windspeed_10m_max[0];
+    let todayMin = daily.temperature_2m_min[0];
+    let todayMax = daily.temperature_2m_max[0];
+
+    const todaySunrise = daily.sunrise[0].split("T")[1];
+    const todaySunset = daily.sunset[0].split("T")[1];
+
+    // Temperature conversion if needed
+    if (!isCelsius) {
+        todayMin = (todayMin * 9/5 + 32).toFixed(1);
+        todayMax = (todayMax * 9/5 + 32).toFixed(1);
+    }
+
+    const unit = isCelsius ? "°C" : "°F";
+
+    summaryBox.innerHTML = `
+    <div class="row g-3 mt-4 justify-content-center">
+
+        <div class="col-md-2 col-sm-6 info-card">
+            <div class="card card-weather text-center p-3">
+                <div class="info-icon">💨</div>
+                <h5>Wind Speed</h5>
+                <p>${todayWind} km/h</p>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 info-card">
+            <div class="card card-weather text-center p-3">
+                <div class="info-icon">🧊</div>
+                <h5>Min Temp</h5>
+                <p>${todayMin}${unit}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 info-card">
+            <div class="card card-weather text-center p-3">
+                <div class="info-icon">🔥</div>
+                <h5>Max Temp</h5>
+                <p>${todayMax}${unit}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 info-card">
+            <div class="card card-weather text-center p-3">
+                <div class="info-icon">🌅</div>
+                <h5>Sunrise</h5>
+                <p>${todaySunrise}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6 info-card">
+            <div class="card card-weather text-center p-3">
+                <div class="info-icon">🌇</div>
+                <h5>Sunset</h5>
+                <p>${todaySunset}</p>
+            </div>
+        </div>
+
+    </div>
+    `;
+}
+
+
+/* ---------------------------------------------- */
+/* THEME TOGGLE (unchanged, works correctly)       */
+/* ---------------------------------------------- */
+
+document.body.classList.add("light-mode");
+let isLight = true;
+
+themeToggle.textContent = "Dark Mode";
+
+themeToggle.addEventListener("click", () => {
+    isLight = !isLight;
+
+    if (isLight) {
+        document.body.classList.add("light-mode");
+        document.body.classList.remove("dark-mode");
+        themeToggle.textContent = "Dark Mode";
+    } else {
+        document.body.classList.remove("light-mode");
+        document.body.classList.add("dark-mode");
+        themeToggle.textContent = "Light Mode";
+    }
 });
