@@ -1,4 +1,4 @@
-// Era Krasniqi - Daily Forecast Page
+// Era Kelmendi - Daily Forecast Page
 
 const searchBtn = document.getElementById('searchBtn');
 const cityInput = document.getElementById('cityInput');
