@@ -54,6 +54,7 @@ input.form-control:focus {
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 10px 40px rgba(0, 150, 255, 0.15);
     color: white;
+    width: 100%;
 }
 
 .section-title {
@@ -84,9 +85,9 @@ input.form-control:focus {
 }
 
 .footer {
-    background-color: #1c1c1c;
+    color: #ffffff !important;
     font-size: 0.9rem;
-    color: #b0bec5;
+    border-top: 1px solid #3a3a3a;
 }
 
 /* Light Theme */
@@ -108,6 +109,16 @@ body.light-mode .welcome-card {
 
 body.light-mode .footer {
     background-color: #f1f3f5;
-    color: #212529;
     border-top: 1px solid #d5d7da;
+    color: #212529 !important;
+    font-size: 0.9rem;
+}
+
+body.light-mode .navbar {
+    background: #1976d2 !important;
+}
+
+body.light-mode .btn-primary {
+    background-color: #1e88e5 !important;
+    border: none !important;
 }
