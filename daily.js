@@ -1,4 +1,4 @@
-// Era Kelmendi
+//Begin Era Kelmendi
 const searchBtn = document.getElementById('searchBtn');
 const cityInput = document.getElementById('cityInput');
 const forecastOutput = document.getElementById('forecastOutput');
@@ -180,4 +180,4 @@ themeToggle.addEventListener("click", () => {
         themeToggle.textContent = "Light Mode";
     }
 });
-// Era Kelmendi
+//End Era Kelmendi
